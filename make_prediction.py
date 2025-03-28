@@ -39,20 +39,32 @@ def preprocess_new_book(book_data, scaler_path, encoder_path):
         'genre', 'reading_level', 'age_category'
     ]
     
-    # Ensure book_data has all required features
+    # Default values for missing attributes
+    default_values = {
+        'publication_year': 2000,
+        'page_count': 100,
+        'is_series': False,
+        'has_movie_adaptation': False,
+        'awards_count': 0,
+        'average_goodreads_rating': 3.0,
+        'has_ebook': False,
+        'has_audiobook': False,
+        'copies_available': 1,  # Default value for optional field
+        'is_required_reading': False,
+        'is_teacher_recommended': False,
+        'genre': 'Unknown',
+        'reading_level': 'Medium',
+        'age_category': 'Adult'
+    }
+    
+    # Fill missing attributes with default values
     for col in feature_cols:
-        if col not in book_data:
-            if col in ['is_series', 'has_movie_adaptation', 'has_ebook', 'has_audiobook',
-                      'is_required_reading', 'is_teacher_recommended']:
-                book_data[col] = False
-            elif col == 'awards_count':
-                book_data[col] = 0
-            else:
-                book_data[col] = None
+        if col not in book_data or book_data[col] is None:
+            book_data[col] = default_values[col]
     
     # Convert boolean columns to integers
     bool_cols = ['is_series', 'has_movie_adaptation', 'has_ebook', 'has_audiobook', 
-                'is_required_reading', 'is_teacher_recommended']
+                 'is_required_reading', 'is_teacher_recommended']
     for col in bool_cols:
         book_data[col] = int(book_data[col])
     
@@ -62,17 +74,6 @@ def preprocess_new_book(book_data, scaler_path, encoder_path):
     
     # Create DataFrames for each feature type
     book_df = pd.DataFrame([book_data])
-    
-    # Handle missing values in the necessary columns
-    book_df.fillna({
-        'is_series': False,
-        'has_movie_adaptation': False,
-        'awards_count': 0,
-        'has_ebook': False,
-        'has_audiobook': False,
-        'is_required_reading': False,
-        'is_teacher_recommended': False
-    }, inplace=True)
     
     # Scale numerical features
     X_numerical = scaler.transform(book_df[numerical_cols])
@@ -84,9 +85,7 @@ def preprocess_new_book(book_data, scaler_path, encoder_path):
     # Get the new column names after one-hot encoding
     categorical_feature_names = []
     for i, col in enumerate(categorical_cols):
-        # Get all possible categories for this column
         categories = encoder.categories_[i]
-        # Create column names for each category
         categorical_feature_names.extend([f"{col}_{category}" for category in categories])
     
     X_categorical_df = pd.DataFrame(X_categorical, columns=categorical_feature_names)
@@ -108,6 +107,22 @@ def predict_popularity(model, book_data, scaler_path, encoder_path):
     predicted_score = model.predict(X_preprocessed)[0]
     
     return predicted_score
+
+def predict_copies_needed(model, book_data, scaler_path, encoder_path, demand_factor=10):
+    """
+    Predict the number of copies needed to ensure no more than 10 students are waiting for the book.
+    """
+    # Preprocess the book data
+    X_preprocessed = preprocess_new_book(book_data, scaler_path, encoder_path)
+    
+    # Predict the popularity score
+    predicted_score = model.predict(X_preprocessed)[0]
+    
+    # Calculate the number of copies needed
+    # Assume demand_factor represents the number of students per popularity score unit
+    copies_needed = max(1, int(predicted_score / demand_factor))
+    
+    return copies_needed
 
 def main():
     """Main function to handle command line arguments and run prediction"""

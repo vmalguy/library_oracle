@@ -113,11 +113,19 @@ To start the Flask API for making predictions:
 python3 flask_api.py
 ```
 
+#### Using the API via the UI
+
+Open your browser and navigate to `http://127.0.0.1:5000/`. Enter the book data in JSON format and click "Predict" to see the results, including the predicted popularity score and the number of copies needed to ensure no more than 10 students are waiting.
+
+#### Using the API via cURL
+
 Send a POST request to `http://127.0.0.1:5000/predict` with a JSON payload containing book data. Example:
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d @sample_book.json http://127.0.0.1:5000/predict
 ```
+
+The response will include the predicted popularity score and the number of copies needed.
 
 ### Using Jupyter Notebooks
 
