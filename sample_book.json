@@ -1,0 +1,22 @@
+{
+    "book_id": "NEW00001",
+    "title": "The Science of Tomorrow: AI and the Future of Education",
+    "author": "Dr. Jane Martinez",
+    "genre": "Science",
+    "publisher": "Penguin Random House",
+    "publication_year": 2020,
+    "page_count": 120,
+    "is_series": false,
+    "reading_level": "Advanced",
+    "age_category": "Young Adult (15-18)",
+    "has_movie_adaptation": false,
+    "has_diverse_characters": true,
+    "awards_count": 2,
+    "average_goodreads_rating": 4.5,
+    "has_ebook": true,
+    "has_audiobook": true,
+    "copies_available": 3,
+    "is_required_reading": false,
+    "is_teacher_recommended": true,
+    "main_topics": ["Technology", "Education", "Science", "Future", "Artificial Intelligence"]
+}

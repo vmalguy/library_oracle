@@ -1,0 +1,16 @@
+# Core data processing and modeling libraries
+pandas>=1.5.0
+numpy>=1.24.0
+scikit-learn>=1.2.0
+tqdm>=4.65.0
+
+# Visualization libraries
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Jupyter notebook and related packages
+jupyter>=1.0.0
+notebook>=6.5.0
+
+# Optional: Kaggle API for downloading datasets
+kaggle>=1.5.12
