@@ -182,23 +182,13 @@ def main():
 
 def test_predict_popularity():
     """Test the predict_popularity function with mock data"""
+    import numpy as np
+    from unittest.mock import MagicMock
+
     # Mock model
-    class MockModel:
-        def predict(self, X):
-            return [42.0]  # Return a fixed prediction for testing
-    
-    # Mock scaler and encoder
-    class MockScaler:
-        def transform(self, X):
-            return X  # Return input as-is for testing
-    
-    class MockEncoder:
-        def transform(self, X):
-            return np.zeros((len(X), 3))  # Return dummy encoded data
-        @property
-        def categories_(self):
-            return [['fiction', 'non-fiction'], ['easy', 'medium', 'hard'], ['child', 'teen', 'adult']]
-    
+    mock_model = MagicMock()
+    mock_model.predict.return_value = [42.0]
+
     # Mock book data
     mock_book_data = {
         'publication_year': 2020,
@@ -216,20 +206,21 @@ def test_predict_popularity():
         'reading_level': 'medium',
         'age_category': 'teen'
     }
-    
-    # Paths to mock scaler and encoder (not used in this test)
-    mock_scaler_path = "mock_scaler.pkl"
-    mock_encoder_path = "mock_encoder.pkl"
-    
-    # Run prediction
-    mock_model = MockModel()
-    mock_scaler = MockScaler()
-    mock_encoder = MockEncoder()
-    predicted_score = predict_popularity(mock_model, mock_book_data, mock_scaler, mock_encoder)
-    
-    # Assert the prediction is as expected
+
+    # Mock preprocess_new_book to bypass file loading
+    def mock_preprocess_new_book(book_data, scaler_path, encoder_path):
+        numerical_features = np.array([[0.5, 0.3, 0.2]])  # Mock scaled numerical features
+        categorical_features = np.array([[1, 0, 0]])  # Mock encoded categorical features
+        boolean_features = np.array([[1, 0, 1, 0, 0, 1]])  # Mock boolean features
+        return np.hstack([numerical_features, categorical_features, boolean_features])
+
+    # Replace preprocess_new_book with the mock version
+    global preprocess_new_book
+    preprocess_new_book = mock_preprocess_new_book
+
+    # Call predict_popularity
+    predicted_score = predict_popularity(mock_model, mock_book_data, "mock_scaler_path", "mock_encoder_path")
     assert predicted_score == 42.0, f"Expected 42.0, got {predicted_score}"
-    print("Test passed: predict_popularity")
 
 if __name__ == "__main__":
     main()

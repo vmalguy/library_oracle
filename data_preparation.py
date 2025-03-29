@@ -47,8 +47,8 @@ def prepare_features(books_df):
         'is_teacher_recommended': False
     }, inplace=True)
     
-    # Target variable: popularity score
-    target = books_df['popularity_score']
+    # Ensure target variable has no NaN values
+    target = books_df['popularity_score'].fillna(0)
     
     # Convert boolean columns to integers (0/1)
     bool_cols = ['is_series', 'has_movie_adaptation', 'has_ebook', 'has_audiobook', 

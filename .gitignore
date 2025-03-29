@@ -21,3 +21,4 @@ models/residuals.png
 models/ridge_regression_model.pkl
 models/scaler.pkl
 notebooks/data_visualization.ipynb
+models/linear_regression_model.pkl

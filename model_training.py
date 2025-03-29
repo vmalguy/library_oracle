@@ -24,6 +24,12 @@ def load_preprocessed_data():
         y_train = pd.read_csv('datasets/y_train.csv').iloc[:, 0]
         y_val = pd.read_csv('datasets/y_val.csv').iloc[:, 0]
         y_test = pd.read_csv('datasets/y_test.csv').iloc[:, 0]
+        
+        # Check for NaN values in target variables
+        if y_train.isna().any() or y_val.isna().any() or y_test.isna().any():
+            print("Error: Target variable contains NaN values. Please check your data.")
+            exit(1)
+        
         print("Successfully loaded preprocessed data.")
         return X_train, X_val, X_test, y_train, y_val, y_test
     except FileNotFoundError:

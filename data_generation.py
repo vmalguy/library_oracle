@@ -11,8 +11,8 @@ from tqdm import tqdm
 np.random.seed(42)
 
 # Constants
-NUM_BOOKS = 200
-START_DATE = datetime(2018, 1, 1)
+NUM_BOOKS = 2000
+START_DATE = datetime(2010, 1, 1)
 END_DATE = datetime(2024, 12, 31)
 MAX_CHECKOUT_DAYS = 21  # Maximum checkout period in days
 GRADE_LEVELS = [9, 10, 11, 12]
@@ -441,7 +441,10 @@ def calculate_popularity_metrics(books_df, checkouts_df):
         popularity_metrics['total_checkouts'] * 0.5 +
         popularity_metrics['recency_score'] * 0.5
     )
-    
+
+    # Ensure popularity_score is filled with zeros for books with no checkouts
+    popularity_metrics['popularity_score'] = popularity_metrics['popularity_score'].fillna(0)
+
     # Normalize the popularity score to a 0-100 scale
     max_score = popularity_metrics['popularity_score'].max()
     if max_score > 0:  # Avoid division by zero
