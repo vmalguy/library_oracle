@@ -26,12 +26,15 @@ HTML_TEMPLATE = """
         }
         h1 {
             color: #333;
+            text-align: center;
         }
         form {
             background: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px auto;
         }
         label {
             font-weight: bold;
@@ -52,6 +55,8 @@ HTML_TEMPLATE = """
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            display: block;
+            margin: 20px auto;
         }
         button:hover {
             background-color: #0056b3;
@@ -64,13 +69,68 @@ HTML_TEMPLATE = """
             border-radius: 8px;
             font-size: 16px;
             color: #333;
+            max-width: 600px;
+            margin: 20px auto;
         }
         .mandatory {
             color: red;
         }
+        .jaguar-image {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .image-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .image-container img {
+            max-width: 200px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .school-info {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        .school-info h2 {
+            color: #333;
+        }
+        .school-info p {
+            font-size: 14px;
+            color: #555;
+        }
+        .school-info a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .school-info a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
+    <h1>Book Popularity Prediction</h1>
+    <div class="image-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Jaguar_closeup.jpg" alt="Jaguar Closeup" class="jaguar-image">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Jaguar_resting.jpg" alt="Jaguar Resting" class="jaguar-image">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Jaguar_in_forest.jpg" alt="Jaguar in Forest" class="jaguar-image">
+    </div>
+    <div class="school-info">
+        <h2>About Jasper High School</h2>
+        <p>Jasper High School, located in Plano, Texas, is known for its commitment to academic excellence and student success. The school offers a wide range of programs and extracurricular activities to support student growth and development.</p>
+        <p>Learn more about Jasper High School by visiting their official website: <a href="https://www.pisd.edu/domain/1463" target="_blank">Jasper High School</a>.</p>
+    </div>
     {% if prediction %}
         <div class="result">
             <h2>Prediction Result:</h2>
@@ -78,7 +138,6 @@ HTML_TEMPLATE = """
             <p>To ensure no more than 10 students are waiting to borrow this book at any given time, you should have at least <strong>{{ prediction.copies_needed }}</strong> copies available.</p>
         </div>
     {% endif %}
-    <h1>Book Popularity Prediction</h1>
     <form method="POST" action="/predict-ui">
         <label for="book_id">Book ID: <span class="mandatory">*</span></label>
         <input type="text" id="book_id" name="book_id" required>

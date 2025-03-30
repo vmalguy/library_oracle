@@ -14,3 +14,6 @@ notebook>=6.5.0
 
 # Optional: Kaggle API for downloading datasets
 kaggle>=1.5.12
+
+flask
+# Add any other dependencies your project requires
